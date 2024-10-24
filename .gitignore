@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+
+# Docker
+*.log
+*.pid
+*.swp
+docker-compose.yml
+Dockerfile
+
+# SQLite-Datenbankdateien
+*.sqlite3
+
+# macOS spezifische Dateien
+.DS_Store
