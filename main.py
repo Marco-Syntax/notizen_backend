@@ -1,12 +1,22 @@
 from fastapi import FastAPI, HTTPException
 from sqlalchemy import select
 from sqlalchemy.sql import func
-from models import notes, metadata  
-from database import database, engine 
+from models import notes, metadata
+from database import database, engine
 from pydantic import BaseModel
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# CORS erlauben
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Erlaube alle Quellen
+    allow_credentials=True,
+    allow_methods=["*"],  # Erlaube alle HTTP-Methoden (einschließlich OPTIONS)
+    allow_headers=["*"],  # Erlaube alle Header
+)
 
 # Tabellen erstellen, falls nicht vorhanden
 metadata.create_all(engine)
@@ -41,7 +51,6 @@ async def get_notes():
 async def create_note(note: NoteIn):
     query = notes.insert().values(title=note.title, content=note.content)
     last_record_id = await database.execute(query)
-    print("Hello World")
     return {**note.dict(), "id": last_record_id, "created_at": str(func.now())}
 
 # PUT: Eine Notiz bearbeiten
